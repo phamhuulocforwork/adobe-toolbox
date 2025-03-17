@@ -6,7 +6,7 @@
   tabPanel.alignChildren = ["fill", "fill"];
   tabPanel.preferredSize = [350, 300];
 }
-var myPanel = new Window("palette", "TheButton v1.0", undefined, { resizeable: true });
+var myPanel = new Window("palette", "SimpleAnimation v1.0", undefined, { resizeable: true });
 myPanel.alignChildren = ["fill", "top"];
 myPanel.spacing = 5;
 myPanel.margins = 10;
@@ -56,6 +56,12 @@ var loopBtn = loopButtonGroup.add("button", undefined, "LoopOut");
 loopBtn.size = [80, 25];
 loopBtn.onClick = function () {
   openSubMenu();
+};
+
+var spinBtn = loopButtonGroup.add("button", undefined, "Spin");
+spinBtn.size = [80, 25];
+spinBtn.onClick = function () {
+  applySpinExpression();
 };
 
 // Loop Settings
@@ -334,4 +340,21 @@ function applySmoothFollowExpression() {
 
   selectedProperty.expression =
     "smoothness = 100; // độ mượt\n" + "value + (valueAtTime(time - .1) - value)/smoothness";
+}
+
+function applySpinExpression() {
+  var comp = app.project.activeItem;
+  if (!comp || !(comp instanceof CompItem)) {
+    alert("Please open a composition.");
+    return;
+  }
+
+  var selectedProperty = comp.selectedProperties[0];
+  if (!selectedProperty) {
+    alert("Please select Rotation property.");
+    return;
+  }
+
+  selectedProperty.expression =
+    "speed = 360; // degrees per second\n" + "value + speed * (time - inPoint)";
 }
